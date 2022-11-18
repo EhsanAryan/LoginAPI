@@ -1,0 +1,31 @@
+.show-info  {
+    box-shadow: 0px 0px 10px black;
+    min-height: 300px;
+}
+
+.info-title {
+    text-decoration: underline solid black 3px;
+}
+
+.info-span {
+    cursor: default;
+}
+
+.info-span:hover {
+    background-color: #0dcaf0 !important;
+}
+
+
+
+
+@media screen and (max-width : 992px) {
+    .show-info {
+        width:  75% !important;
+    }
+}
+
+@media screen and (max-width : 600px) {
+    .show-info {
+        width:  100% !important;
+    }
+}

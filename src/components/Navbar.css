@@ -1,0 +1,35 @@
+.navbar-no-link {
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.55);
+    position: relative;
+    transition: all 0.25s ease-in;
+}
+
+.navbar-no-link::after {
+    content: "";
+    display: block;
+    background-color: white;
+    width: 100%;
+    height: 4px;
+    border-radius: 1rem;
+    position: relative;
+    top: 3px;
+    transform: scale(0 , 0);
+    transition: all 0.25s ease-in;
+}
+
+.navbar-no-link:hover {
+    color: white;
+}
+
+.navbar-no-link:hover::after {
+    transform: scale(1 , 1);
+}
+
+.active-link {
+    color: white;
+}
+
+.active-link::after {
+    transform: scale(1 , 1);
+}
