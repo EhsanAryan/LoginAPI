@@ -7,14 +7,12 @@ import User from "./User";
 import Error from "./Error";
 
 const Main = () => {
-    const [userData , setUserData] = useState(null);
-
     return (
         <Routes>
-            <Route path="/register" element={<RegisterForm userData={userData} setUserData={setUserData} />} />
-            <Route path="/login" element={<LoginForm userData={userData} setUserData={setUserData} />} />
-            <Route path="/user" element={<User userData={userData} setUserData={setUserData} />} />
-            <Route path="/" element={<User userData={userData} setUserData={setUserData} />} />
+            <Route path="/register" element={<RegisterForm />} />
+            <Route path="/login" element={<LoginForm />} />
+            <Route path="/user" element={<User />} />
+            <Route path="/" element={<User />} />
             <Route path="*" element={<Error />} />
         </Routes>
     )

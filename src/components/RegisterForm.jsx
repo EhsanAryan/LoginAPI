@@ -6,44 +6,13 @@ import swal from "sweetalert";
 import ShowError from "./ShowError";
 import "./RegisterForm.css";
 import "./CommonStyles.css";
+import { useDispatch, useSelector } from "react-redux";
 
 
 const initialValues = {
     phone : "" ,
     password : "" ,
     c_password : ""
-}
-
-const onSubmit = (values , submitProps) => {
-    axios.post("https://authservice.azhadev.ir/api/auth/register" , values)
-    .then(response => {
-        if(response.status===200) {
-            swal({
-                title : "Done!" ,
-                icon : "success" ,
-                text : "Your registration was successful."
-            })
-            localStorage.setItem("token" , response.data.token);
-            submitProps.resetForm();
-        }
-        else if(response.status===202) {
-            if(response.data.phone) {
-                swal({
-                    title : "Error!" ,
-                    icon : "error" , 
-                    text : "The phone number is duplicated."
-                })
-            }
-        }
-        else {
-            swal({
-                title : "Error!" ,
-                icon : "error" ,
-                text : "Something went wrong."
-            })
-        }
-        submitProps.setSubmitting(false);
-    });
 }
 
 const validationSchema = Yup.object({
@@ -55,8 +24,42 @@ const validationSchema = Yup.object({
 })
 
 
-const RegisterForm = (props) => {
-    const {setUserData} = props;
+const RegisterForm = () => {
+    const {isToken} = useSelector((state) => state);
+    const dispatch = useDispatch();
+
+    const onSubmit = (values , submitProps) => {
+        axios.post("https://authservice.azhadev.ir/api/auth/register" , values)
+        .then(response => {
+            if(response.status===200) {
+                swal({
+                    title : "Done!" ,
+                    icon : "success" ,
+                    text : "Your registration was successful."
+                })
+                localStorage.setItem("token" , response.data.token);
+                dispatch({type : "get-token"});
+                submitProps.resetForm();
+            }
+            else if(response.status===202) {
+                if(response.data.phone) {
+                    swal({
+                        title : "Error!" ,
+                        icon : "error" , 
+                        text : "The phone number is duplicated."
+                    })
+                }
+            }
+            else {
+                swal({
+                    title : "Error!" ,
+                    icon : "error" ,
+                    text : "Something went wrong."
+                })
+            }
+            submitProps.setSubmitting(false);
+        });
+    }
 
     const handleLogout = () => {
         axios.get("https://authservice.azhadev.ir/api/auth/logout" , {
@@ -72,7 +75,7 @@ const RegisterForm = (props) => {
                     text : "You have successfully logged out."
                 })
                 localStorage.removeItem("token");
-                setUserData(null);
+                dispatch({type : "no-data"});
             }
             else {
                 swal({
@@ -103,7 +106,7 @@ const RegisterForm = (props) => {
             {(formik) => {
                 return (
                     <Form className="register-form w-50 bg-light rounded-3 p-2">
-                        {localStorage.getItem("token") ? (
+                        {isToken ? (
                             <div className=" warning-div">
                                 <div className="w-100 fs-3 text-center">
                                     You are already in your account.

@@ -6,36 +6,13 @@ import ShowError from "./ShowError";
 import axios from "axios";
 import "./LoginForm.css";
 import "./CommonStyles.css";
+import { useDispatch, useSelector } from "react-redux";
 
 
 const initialValues = {
     phone : "" ,
     password : "" ,
     remember : ["0"]
-}
-
-const onSubmit = (values , submitProps) => {
-    const validValues = values.remember.length > 1 ? {...values , remember : values.remember[1]} : {...values , remember : values.remember[0]};
-    axios.post("https://authservice.azhadev.ir/api/auth/login" , validValues)
-    .then(response => {
-        if(response.status===200) {
-            swal({
-                title : "Done!" ,
-                icon : "success" ,
-                text : "Your login was successful."
-            })
-            localStorage.setItem("token" , response.data.token);
-            submitProps.resetForm();
-        }
-        else {
-            swal({
-                title : "Error!" ,
-                icon : "error" ,
-                text : "The information is not correct!"
-            })
-        }
-        submitProps.setSubmitting(false);
-    });
 }
 
 const validationSchema = Yup.object({
@@ -45,8 +22,34 @@ const validationSchema = Yup.object({
 })
 
 
-const LoginForm = (props) => {
-    const {setUserData} = props;
+const LoginForm = () => {
+    const {isToken} = useSelector((state) => state);
+    const dispatch = useDispatch();
+
+    const onSubmit = (values , submitProps) => {
+        const validValues = values.remember.length > 1 ? {...values , remember : values.remember[1]} : {...values , remember : values.remember[0]};
+        axios.post("https://authservice.azhadev.ir/api/auth/login" , validValues)
+        .then(response => {
+            if(response.status===200) {
+                swal({
+                    title : "Done!" ,
+                    icon : "success" ,
+                    text : "Your login was successful."
+                })
+                localStorage.setItem("token" , response.data.token);
+                dispatch({type : "get-token"});
+                submitProps.resetForm();
+            }
+            else {
+                swal({
+                    title : "Error!" ,
+                    icon : "error" ,
+                    text : "The information is not correct!"
+                })
+            }
+            submitProps.setSubmitting(false);
+        });
+    }
 
     const handleLogout = () =>{
         axios.get("https://authservice.azhadev.ir/api/auth/logout" , {
@@ -62,7 +65,7 @@ const LoginForm = (props) => {
                     text : "You have successfully logged out."
                 })
                 localStorage.removeItem("token");
-                setUserData(null);
+                dispatch({type : "no-data"});
             }
             else {
                 swal({
@@ -92,7 +95,7 @@ const LoginForm = (props) => {
                 {(formik) => {
                     return (
                         <Form className="login-form w-50 bg-light rounded-3 p-2">
-                            {localStorage.getItem("token") ? (
+                            {isToken ? (
                                 <div className="warning-div">
                                     <div className="w-100 fs-3 text-center">
                                         You are already in your account.
@@ -134,7 +137,6 @@ const LoginForm = (props) => {
                                                 )
                                             }}
                                         </FastField>
-                                        
                                     </div>
                                     <div className="col-12 text-center mt-5 mb-3">
                                         <button type="submit" className="btn btn-info btn-lg px-4"

@@ -15,7 +15,19 @@
     background-color: #0dcaf0 !important;
 }
 
+.spinner-container {
+    width: 100%;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 
+.mySpinner {
+    width: 90px;
+    height: 90px;
+}
 
 
 @media screen and (max-width : 992px) {
