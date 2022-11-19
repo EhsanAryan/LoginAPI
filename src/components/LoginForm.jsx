@@ -16,7 +16,7 @@ const initialValues = {
 }
 
 const validationSchema = Yup.object({
-    phone : Yup.string().required("Fill the Phone number field!").matches(/^[0-9]{11}$/ , "The phone number must a 11 digit number!") ,
+    phone : Yup.string().required("Fill the Phone number field!").matches(/^[0-9]{10}$/ , "The phone number must a 10 digit number!") ,
     password : Yup.string().required("Fill the password field!")
     .matches(/^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.{8,})/ , "The password must contain at least an uppercase character and a number, and must be longer than 8 characters!")
 })
@@ -27,7 +27,8 @@ const LoginForm = () => {
     const dispatch = useDispatch();
 
     const onSubmit = (values , submitProps) => {
-        const validValues = values.remember.length > 1 ? {...values , remember : values.remember[1]} : {...values , remember : values.remember[0]};
+        const validValues = values.remember.length > 1 ? {...values , phone : `0${values.phone}` , remember : values.remember[1]} : {...values , phone : `0${values.phone}` , remember : values.remember[0]};
+        
         axios.post("https://authservice.azhadev.ir/api/auth/login" , validValues)
         .then(response => {
             if(response.status===200) {

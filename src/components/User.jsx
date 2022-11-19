@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import "./User.css";
@@ -8,7 +8,7 @@ import { useSelector , useDispatch } from "react-redux";
 
 
  const User = () => {
-    const {userData , isToken , loading} = useSelector((state) => state);
+    const {userData , loading} = useSelector((state) => state);
     const dispatch = useDispatch();
 
     useEffect(() => {

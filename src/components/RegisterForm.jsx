@@ -16,7 +16,7 @@ const initialValues = {
 }
 
 const validationSchema = Yup.object({
-    phone : Yup.string().required("Fill the Phone number field!").matches(/^[0-9]{11}$/ , "The phone number must a 11 digit number!") ,
+    phone : Yup.string().required("Fill the Phone number field!").matches(/^[0-9]{10}$/ , "The phone number must a 10 digit number!") ,
     password : Yup.string().required("Fill the password field!")
     .matches(/^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.{8,})/ , "The password must contain at least an uppercase character and a number, and must be longer than 8 characters!") ,
     c_password : Yup.string().required("Fill the confirm password field!")
@@ -29,7 +29,9 @@ const RegisterForm = () => {
     const dispatch = useDispatch();
 
     const onSubmit = (values , submitProps) => {
-        axios.post("https://authservice.azhadev.ir/api/auth/register" , values)
+        const validValues = {...values , phone : `0${values.phone}`};
+
+        axios.post("https://authservice.azhadev.ir/api/auth/register" , validValues)
         .then(response => {
             if(response.status===200) {
                 swal({
@@ -119,11 +121,11 @@ const RegisterForm = () => {
                         ) : (
                             <div className="row">
                                 <div className="col-12 text-center mt-3 mb-5">
-                                    <i class="fa-solid fa-user-plus fa-3x"></i>
+                                    <i className="fa-solid fa-user-plus fa-3x"></i>
                                 </div>
                                 <div className="col-12 col-md-10 col-xl-8 mx-auto my-2">
-                                    <div class="input-group">
-                                            <button type="button" class="btn btn-dark">
+                                    <div className="input-group">
+                                            <button type="button" className="btn btn-dark">
                                                     +98
                                             </button>
                                             <FastField type="phone" className="form-control" name="phone" id="phone"
@@ -145,8 +147,8 @@ const RegisterForm = () => {
                                     <button type="submit" className="btn btn-info btn-lg px-4"
                                     disabled={formik.isSubmitting || !(formik.isValid && formik.dirty)} >
                                         {formik.isSubmitting ? (
-                                            <div class="spinner-border text-dark">
-                                                <span class="visually-hidden">Loading...</span>
+                                            <div className="spinner-border text-dark">
+                                                <span className="visually-hidden">Loading...</span>
                                             </div>
                                         ) : "Submit"}
                                     </button>

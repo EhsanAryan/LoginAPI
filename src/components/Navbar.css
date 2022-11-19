@@ -1,3 +1,8 @@
+.myNav {
+    position: relative;
+    z-index: 999;
+}
+
 .navbar-no-link {
     text-decoration: none;
     color: rgba(255, 255, 255, 0.55);
@@ -13,7 +18,7 @@
     height: 4px;
     border-radius: 1rem;
     position: relative;
-    top: 3px;
+    top: 2px;
     transform: scale(0 , 0);
     transition: all 0.25s ease-in;
 }
