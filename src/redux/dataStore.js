@@ -1,6 +1,8 @@
-import { createStore } from "redux";
+import { configureStore } from "@reduxjs/toolkit";
 import dataReucer from "./dataReducer/dataReducer";
 
-const dataStore = createStore(dataReucer);
+const dataStore = configureStore({
+    reducer : dataReucer
+})
 
 export default dataStore;

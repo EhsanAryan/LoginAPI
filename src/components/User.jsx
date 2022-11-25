@@ -75,8 +75,8 @@ import { useSelector , useDispatch } from "react-redux";
         <div className="show-info bg-light p-2 rounded-3 w-50">
             {loading ? (
                 <div className="spinner-container">
-                    <div class="spinner-border text-dark mySpinner">
-                        <span class="visually-hidden">Loading...</span>
+                    <div className="spinner-border text-dark mySpinner">
+                        <span className="visually-hidden">Loading...</span>
                     </div>
                    <div className="fs-3 my-3">
                     Please wait...
